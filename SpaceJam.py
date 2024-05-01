@@ -18,8 +18,6 @@ class SpaceJam(ShowBase):
         #Q Rolls Left, E Rolls Right, despite being labelled as "turns" on the lecture slides
         #Z & X Rotate Left and Right Respectively
         #C and V Roll the Camera Forwards and Backwards respectively
-        #
-        #
 #---------------------------------------------------------------------Planet Placement Phase--------------------------------------------------------------------
         print("Phase 1: Planet Placement")
         self.Universe = spaceJamClasses.Universe(self.loader,"./Assets/Universe/Universe.x",self.render,'Universe',"./Assets/Universe/starfield-in-blue.jpg",(0,0,0),10000)
@@ -39,12 +37,12 @@ class SpaceJam(ShowBase):
         self.Ship3 = spaceJamClasses.Ship(self.loader,"./Assets/blorg/theBorg.x",self.render,'Ship3',"./Assets/blorg/small_space_ship_2_color.jpg",(700,312,36),1)
         self.Ship4 = spaceJamClasses.Ship(self.loader,"./Assets/blorg/theBorg.x",self.render,'Ship4',"./Assets/blorg/small_space_ship_2_color.jpg",(692,42,8),1)
         self.Ship5 = spaceJamClasses.Ship(self.loader,"./Assets/blorg/theBorg.x",self.render,'Ship5',"./Assets/blorg/small_space_ship_2_color.jpg",(0,70,8),1)
-        self.Hero = spaceJamClasses.Player(self.loader,"./Assets/blorg/theBorg.x",self.render,'Hero',"./Assets/blorg/small_space_ship_2_color.jpg",(0,0,0),1)
+        self.Hero = spaceJamClasses.Player(self.loader,"./Assets/blorg/theBorg.x",self.render,'Hero',"./Assets/blorg/small_space_ship_2_color.jpg",(0,0,0),1, (0, 90, 0))
         print("Phase 1: Done")
 #---------------------------------------------------------------------Controller & Camera Modification--------------------------------------------------------------------
         print("Phase 2: Keybind Init")
         self.Hero.SetKeyBindings()
-        self.SetCamera()
+        # self.SetCamera()
         print("Phase 2: Done")
 #---------------------------------------------------------------------Drone Placement Phase--------------------------------------------------------------------- 
         print("Phase 3: Drone Placement")
@@ -95,13 +93,13 @@ class SpaceJam(ShowBase):
         unitVec.normalize()
         position = unitVec * 250 + centralObject.modelNode.getPos()
         spaceJamClasses.Drone(self.loader, "./Assets/DroneDefender/DroneDefender.obj", self.render, droneName, "./Assets/DroneDefender/octotoad1_auv.png", position, 10)
-    def SetCamera(self):
-        self.disableMouse()
-        print("Mouse Control Disabled")
-        self.camera.reparentTo(self.Hero.model)
-        print("Camera Attached to Player")
-        self.camera.setFluidPos(0,1,0)
-        print("Following")
+    # def SetCamera(self):
+    #     self.disableMouse()
+    #     print("Mouse Control Disabled")
+    #     self.camera.reparentTo(self.Hero.model)
+    #     print("Camera Attached to Player")
+    #     self.camera.setFluidPos(0,1,0)
+    #     print("Following")
     def quit(self):
         sys.exit()
 app = SpaceJam()

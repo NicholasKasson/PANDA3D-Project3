@@ -70,11 +70,12 @@ class Ship(ShowBase):
         self.model.setTexture(tex, 1)                
 #---------------------------------------------------------------------PLAYER INIT---------------------------------------------------------------------
 class Player(ShowBase):
-    def __init__(self, loader: Loader, modelPath: str, parentNode: NodePath, nodeName: str, texPath: str, posVec: Vec3, scaleVec: float):
+    def __init__(self, loader: Loader, modelPath: str, parentNode: NodePath, nodeName: str, texPath: str, posVec: Vec3, scaleVec: float, HPRoffset: Vec3):
         self.model = loader.loadModel(modelPath)
         self.model.reparentTo(parentNode)
         self.model.setPos(posVec)
         self.model.setScale(scaleVec)
+        self.model.setHpr(HPRoffset)
         
         self.model.setName(nodeName)
         tex = loader.loadTexture(texPath)
@@ -110,35 +111,35 @@ class Player(ShowBase):
         self.accept('v-up', self.BackwardsRoll, [0])
         
 #DIRECTIONAL MOVEMENT        
-    def UpwardsThrust(self, keyDown):
+    def ForwardsThrust(self, keyDown):
         if keyDown: 
-            self.taskMgr.add(self.ApplyUpwardsThrust, 'upwards thrust')
+            self.taskMgr.add(self.ApplyForwardsThrust, 'upwards thrust')
         else: 
             self.taskMgr.remove('upwards thrust')
-    def ApplyUpwardsThrust(self, task):
-        rate = 4
+    def ApplyForwardsThrust(self, task):
+        rate = -4
         trajectory = self.render.getRelativeVector(self.model, Vec3.up())
         trajectory.normalize()
         self.model.setFluidPos(self.model.getPos() + trajectory * rate)
         return Task.cont   
-    def DownwardsThrust(self, keyDown):
+    def BackwardsThrust(self, keyDown):
         if keyDown: 
-            self.taskMgr.add(self.ApplyDownwardsThrust, 'downwards thrust')
+            self.taskMgr.add(self.ApplyBackwardsThrust, 'downwards thrust')
         else: 
             self.taskMgr.remove('downwards thrust')
-    def ApplyDownwardsThrust(self, task):
-        rate = 4
+    def ApplyBackwardsThrust(self, task):
+        rate = -4
         trajectory = self.render.getRelativeVector(self.model, Vec3.down())
         trajectory.normalize()
         self.model.setFluidPos(self.model.getPos() + trajectory * rate)
         return Task.cont
     #Forwards works!
-    def ForwardsThrust(self, keyDown):
+    def UpwardsThrust(self, keyDown):
         if keyDown: 
-            self.taskMgr.add(self.ApplyForwardsThrust, 'forwards thrust')
+            self.taskMgr.add(self.ApplyUpwardsThrust, 'forwards thrust')
         else: 
             self.taskMgr.remove('forwards thrust')
-    def ApplyForwardsThrust(self, task):
+    def ApplyUpwardsThrust(self, task):
         rate = 4
         trajectory = self.render.getRelativeVector(self.model, Vec3.forward())
         trajectory.normalize()
@@ -166,12 +167,12 @@ class Player(ShowBase):
         trajectory.normalize()
         self.model.setFluidPos(self.model.getPos() + trajectory * rate)      
         return Task.cont
-    def BackwardsThrust(self, keyDown):
+    def DownwardsThrust(self, keyDown):
         if keyDown: 
-            self.taskMgr.add(self.ApplyBackwardsThrust, 'backwards thrust')
+            self.taskMgr.add(self.ApplyDownwardsThrust, 'backwards thrust')
         else: 
             self.taskMgr.remove('backwards thrust')
-    def ApplyBackwardsThrust(self, task):
+    def ApplyDownwardsThrust(self, task):
         rate = 4
         trajectory = self.render.getRelativeVector(self.model, Vec3.back())
         trajectory.normalize()
